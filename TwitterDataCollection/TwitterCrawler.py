@@ -1,7 +1,6 @@
-import codecs
 from datetime import datetime
 import sys
-from TwitterAPI import TwitterAPI, TwitterOAuth, TwitterRestPager
+from TwitterAPI import TwitterAPI
 import json, time
 
 #Reads Twitter credientials from file and creates an authenticated TwitterAPI Object
@@ -12,18 +11,21 @@ def getAPIObject():
 
     #Auth the API object
     try:
-        api = TwitterAPI(credentials[0],
-                         credentials[1],
-                         credentials[2],
-                         credentials[3])
-        return api
+        auth = TwitterAPI(credentials[0],credentials[1],credentials[2],credentials[3])
+        return auth
     except Exception as e:
-        print "Error authenticating with TwitterAPI: " + str(e)
-def doTwitterSearch(searchTerm, coordinates, radius, excludeRTs):
+        print "Error authenticating with Tweepy: " + str(e)
+
+def doTwitterSearch(searchTerm, coordinates, excludeRTs, stateName):
+
+    print "**Doing Twitter search for \"" + searchTerm + "\""
     try:
         api = getAPIObject()
-        queryTerms = {"q":searchTerm,"count":100,"lang":"en","include_entities":"false","geocode":coordinates + "," + str(radius) + "mi"}
+        queryTerms = {"q":searchTerm}
+        print "Searches left: " + str(api.request('application/rate_limit_status',{"resources":"search"}).json()["resources"]["search"]["/search/tweets"]["remaining"])
+
         query = api.request('search/tweets',queryTerms).json()
+
         prunedOutput = dict()
         prunedOutput["results"] = list()
         for tweet in query["statuses"]:
@@ -44,18 +46,21 @@ def doTwitterSearch(searchTerm, coordinates, radius, excludeRTs):
         queryTerms["tweets_returned"] = len(query["statuses"])
         prunedOutput["query"] = queryTerms
 
+        """
+        TODO: Put output JSON files in a separate directory
+        """
+
         #Dumps JSON data to file in format "query".txt
         with open(queryTerms["q"] + '.json', 'w+') as outputFile:
             json.dump(prunedOutput, outputFile)
 
         #Prints rate limit quoata
-        print "Searches left: " + str(api.request('application/rate_limit_status',{"resources":"search"}).json()["resources"]["search"]["/search/tweets"]["remaining"])
 
     except Exception as e:
         print(e)
 
-doTwitterSearch("bernie sanders", "38.898748,-77.037684", 20, True)
-# with open("CandidateList.txt","r") as searchFile:
-#     for term in searchFile.read().split("\n"):
-#         if term != "" and term != " ":
-#             doTwitterSearch(term, "38.898748,-77.037684", 20)
+def DoSearchOnCandidate(candidate):
+    with open("state-coords.txt","r") as sFile:
+        for line in sFile:
+            doTwitterSearch(candidate, line.split()[1], True, line.split()[0])
+DoSearchOnCandidate("bernie sanders")
