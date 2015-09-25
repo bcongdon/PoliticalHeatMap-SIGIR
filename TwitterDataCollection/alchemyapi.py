@@ -48,18 +48,18 @@ if __name__ == '__main__':
     """
 
     import sys
-    if len(sys.argv) == 2 and sys.argv[1]:
-        if len(sys.argv[1]) == 40:
-            # write the key to the file
-            f = open('api_key.txt', 'w')
-            f.write(sys.argv[1])
-            f.close()
-            print('Key: ' + sys.argv[1] + ' was written to api_key.txt')
-            print(
-                'You are now ready to start using AlchemyAPI. For an example, run: python example.py')
-        else:
-            print(
-                'The key appears to invalid. Please make sure to use the 40 character key assigned by AlchemyAPI')
+    # if len(sys.argv) == 2 and sys.argv[1]:
+    #     if len(sys.argv[1]) == 40:
+    #         # write the key to the file
+    #         f = open('api_key.txt', 'w')
+    #         f.write(sys.argv[1])
+    #         f.close()
+    #         print('Key: ' + sys.argv[1] + ' was written to api_key.txt')
+    #         print(
+    #             'You are now ready to start using AlchemyAPI. For an example, run: python example.py')
+    #     else:
+    #         print(
+    #             'The key appears to invalid. Please make sure to use the 40 character key assigned by AlchemyAPI')
 
 
 class AlchemyAPI:
@@ -136,7 +136,7 @@ class AlchemyAPI:
 
     s = requests.Session()
 
-    def __init__(self):
+    def __init__(self,key):
         """
         Initializes the SDK so it can send requests to AlchemyAPI for analysis.
         It loads the API key from api_key.txt and configures the endpoints.
@@ -148,10 +148,6 @@ class AlchemyAPI:
             TODO
             Multiple keys
             """
-            # Open the key file and read the key
-            f = open("api_key.txt", "r")
-            key = f.read().strip()
-
             if key == '':
                 # The key file should't be blank
                 print(
@@ -168,8 +164,6 @@ class AlchemyAPI:
                 # setup the key
                 self.apikey = key
 
-            # Close file
-            f.close()
         except IOError:
             # The file doesn't exist, so show the message and create the file.
             print(

@@ -1,31 +1,17 @@
 from datetime import datetime
-import sys
+import sys, os
 from TwitterAPI import TwitterAPI
 from alchemyapi import AlchemyAPI
+import APIKeyManager
 
 import json, time
 
-#Reads Twitter credientials from file and creates an authenticated TwitterAPI Object
-def getAPIObject():
-    credentials = []
-    with open("credentials.txt", "r") as credFile:
-         credentials = credFile.read().split("\n")
-
-    #Auth the API object
-    try:
-        auth = TwitterAPI(credentials[0],credentials[1],credentials[2],credentials[3])
-        return auth
-    except Exception as e:
-        print "Error authenticating with TwitterAPI: " + str(e)
-
-def getAlchemyObject():
-    return AlchemyAPI()
-
 def doTwitterSearch(searchTerm, coordinates, radius, stateName):
 
-    print "**Doing Twitter search for \"" + searchTerm + "\" in " + stateName
+    print "-Doing Twitter search for \"" + searchTerm + "\" in " + stateName
+    alchemyAPI = APIKeyManager.GetAlchemyAPIObject()
     try:
-        api = getAPIObject()
+        api = APIKeyManager.GetTwitterAPIObject()
         queryTerms = {"q":searchTerm,"geocode":coordinates + "," + radius + "km", "count":100}
 
         query = api.request('search/tweets',queryTerms).json()
@@ -43,15 +29,19 @@ def doTwitterSearch(searchTerm, coordinates, radius, stateName):
             prunedOutput["tweets"].append(resultDict)
 
             ### SENTIMENT ANALYSIS
-            alchemyResponse = AlchemyAPI().sentiment('text', tweet["text"])
             sentiment = "0"
-            if alchemyResponse["status"] == "OK":
-                if 'score' in alchemyResponse["docSentiment"]:
-                    sentiment = alchemyResponse["docSentiment"]["score"]
-                    count += 1
+            if tweet["text"] != None:
+                alchemyResponse = alchemyAPI.sentiment('text', tweet["text"])
+                count = 0
+                if alchemyResponse["status"] == "OK":
+                    if 'score' in alchemyResponse["docSentiment"]:
+                        sentiment = alchemyResponse["docSentiment"]["score"]
+                        count += 1
 
-            else:
-                print "Problem with AlchemyAPI response: " + alchemyResponse["statusInfo"]
+                else:
+                    print alchemyResponse["status"]
+                    print "Problem with AlchemyAPI response: " + alchemyResponse["statusInfo"]
+                    alchemyAPI = APIKeyManager.GetAlchemyAPIObject()
             resultDict["sentiment"] = sentiment
 
         #Sorts the results from oldest -> newest
@@ -70,8 +60,11 @@ def doTwitterSearch(searchTerm, coordinates, radius, stateName):
 def OutputJSONResults(resultsDict, candidate):
     #Import old results if they exists
     outputResults = dict()
+    DIR = "output/"
+    if not os.path.exists(os.path.dirname(DIR)):
+        os.makedirs(os.path.dirname(DIR))
     try:
-        with open(candidate.replace(" ","") + ".json", "r") as oFile:
+        with open(DIR + candidate.replace(" ","") + ".json", "r") as oFile:
             outputResults = json.load(oFile);
     except Exception as e:
         print "No old JSON file found, creating new one."
@@ -96,11 +89,10 @@ def OutputJSONResults(resultsDict, candidate):
 
         outputResults['states'][state]['sentiment'] = ProcessSentimentStatistics(outputResults['states'][state]['tweets'])
 
-    with open(candidate.replace(" ","") + ".json", "w+") as oFile:
+    with open(DIR + candidate.replace(" ","") + ".json", "w+") as oFile:
         json.dump(outputResults, oFile);
 
 def ProcessSentimentStatistics(tweets):
-    print tweets
     posSentiment, negSentiment = 0,0
     cumSentiment = 0.0
     for tweet in tweets:
@@ -120,7 +112,7 @@ def DoSearchOnCandidate(candidate):
     outputResults["candidate"] = candidate
     outputResults["states"] = dict()
 
-    api = getAPIObject()
+    api = APIKeyManager.GetTwitterAPIObject()
     with open("state-coords.txt","r") as sFile:
         for line in sFile:
             if len(line.split()) == 0:
@@ -132,4 +124,11 @@ def DoSearchOnCandidate(candidate):
     print "***Searches left: " + str(api.request('application/rate_limit_status',{"resources":"search"}).json()["resources"]["search"]["/search/tweets"]["remaining"])
     OutputJSONResults(outputResults, candidate)
 
-DoSearchOnCandidate("bernie sanders")
+def SearchAllCandidates():
+    with open("candidates.txt","r") as cFile:
+        for line in cFile.read().split("\n"):
+            if line != "":
+                print "-----------"+line+"--------------"
+                DoSearchOnCandidate(line)
+
+SearchAllCandidates()
