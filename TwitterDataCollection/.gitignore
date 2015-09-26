@@ -1,0 +1,4 @@
+*credentials.txt
+*api_key.txt
+*.json
+*.pyc

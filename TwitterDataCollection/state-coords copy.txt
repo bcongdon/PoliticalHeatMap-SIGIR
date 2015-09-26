@@ -1,0 +1,51 @@
+Alabama 32.879587173066305,-86.8798828125 270
+Alaska 64.99793920061401,-150.99609375 734
+Arizona 34.0489281,-111.09373110000001 384
+Arkansas 34.66062958023531,-92.095505275 280
+California 35.53222622770337,-122.69531249999994 717
+Colorado 39.13635178886716,-105.8109998703003 350
+Connecticut 41.52502957323801,-72.586669921875 100
+Delaware 39.05331810674133,-75.421142578125 80
+DistrictOfColumbia 38.88889501576177,-77.0526123046875 40
+Florida 26.863280626766265,-84.57275390625 500
+Georgia
+Hawaii
+Idaho
+Illinois
+Indiana
+Iowa
+Kansas
+Kentucky
+Louisiana
+Maine
+Maryland
+Massachusetts
+Michigan
+Minnesota
+Mississippi
+Missouri
+Montana
+Nebraska
+Nevada
+NewHampshire
+NewJersey
+NewMexico
+New York
+NorthCarolina
+NorthDakota
+Ohio
+Oklahoma
+Oregon
+Pennsylvania
+RhodeIsland
+SouthCarolina
+SouthDakota
+Tennessee
+Texas
+Utah
+Vermont
+Virginia
+Washington
+WestVirginia
+Wisconsin
+Wyoming
