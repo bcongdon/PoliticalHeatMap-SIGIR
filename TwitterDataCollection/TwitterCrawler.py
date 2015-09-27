@@ -39,9 +39,9 @@ def doTwitterSearch(searchTerm, coordinates, radius, stateName):
                         count += 1
 
                 else:
-                    print alchemyResponse["status"]
-                    print "Problem with AlchemyAPI response: " + alchemyResponse["statusInfo"]
                     alchemyAPI = APIKeyManager.GetAlchemyAPIObject()
+                    print "Problem tweet: " + tweet["text"]
+                    print "Problem with AlchemyAPI response: " + alchemyResponse["statusInfo"]
             resultDict["sentiment"] = sentiment
 
         #Sorts the results from oldest -> newest
@@ -125,10 +125,18 @@ def DoSearchOnCandidate(candidate):
     OutputJSONResults(outputResults, candidate)
 
 def SearchAllCandidates():
+    candidates = list()
     with open("candidates.txt","r") as cFile:
         for line in cFile.read().split("\n"):
-            if line != "":
-                print "-----------"+line+"--------------"
-                DoSearchOnCandidate(line)
+            candidates.append(line)
+    for candidate in candidates:
+        currentCandidate = candidates.pop(0)
+        if currentCandidate != "":
+            print "-----------"+currentCandidate+"--------------"
+            DoSearchOnCandidate(currentCandidate)
+        candidates.append(candidate)
+        with open("candidates.txt","w") as cFile:
+            for each in candidates:
+                cFile.write(each + "\n")
 
 SearchAllCandidates()

@@ -1,20 +1,21 @@
-Hillary Clinton
-Martin O'Malley
-Bernie Sanders
-Jim Webb
-Jeb Bush
-Ben Carson
-Chris Christie
-Ted Cruz
-Mark Everson
-Carly Florina
-Jim Gilmore
-Lindsey Graham
-Mike Huckabee
-Bobby Jindal
 John Kasich
 George Pataki
 Rand Paul
 Marco Rubio
 Rick Santorum
 Donald Trump
+Hillary Clinton
+Martin O'Malley
+Bernie Sanders
+Jeb Bush
+Chris Christie
+Ben Carson
+Ted Cruz
+Carly Florina
+Mark Everson
+Jim Gilmore
+
+
+Lindsey Graham
+Bobby Jindal
+George Pataki
