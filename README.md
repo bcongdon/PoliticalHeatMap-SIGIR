@@ -20,10 +20,13 @@ TwitterCrawler.py makes use of TwitterAPI and AlchemyAPI. In order to use Twitte
 5. Register for an Alchemy API key [here](http://www.alchemyapi.com/api/register.html).
 6. In "api_key.txt" place your Alchemy API key on the first line.
   * If you have more than one AlchemyAPI key, you may place additional API keys on subsequent lines to circumvent the limit on API calls per account.
-7. Run the following command:
-  ```
-  python TwitterCrawler.py
-  ```
+7. Run the following command to install the necessary Python packages. 
+
+  ```pip install TwitterAPI```
+
+8. Run the following command: 
+
+  ```python TwitterCrawler.py```
 
 ### Optional Settings
 * The "candidates.txt" file may be edited to add or remove candidates to search for. Each candidate must be written on separate lines. By default, this file contains current 2016 US Presidential candidates as of ~September, 2015.
