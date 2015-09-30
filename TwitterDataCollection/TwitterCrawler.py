@@ -128,7 +128,8 @@ def SearchAllCandidates():
     candidates = list()
     with open("candidates.txt","r") as cFile:
         for line in cFile.read().split("\n"):
-            candidates.append(line)
+            if(line != ""):
+                candidates.append(line)
     for candidate in candidates:
         currentCandidate = candidates.pop(0)
         if currentCandidate != "":
@@ -137,6 +138,7 @@ def SearchAllCandidates():
         candidates.append(candidate)
         with open("candidates.txt","w") as cFile:
             for each in candidates:
-                cFile.write(each + "\n")
+                if len(each.split()) > 0:
+                    cFile.write(each + "\n")
 
 SearchAllCandidates()
