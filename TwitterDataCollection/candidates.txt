@@ -1,6 +1,3 @@
-John Kasich
-George Pataki
-Rand Paul
 Marco Rubio
 Rick Santorum
 Donald Trump
@@ -14,8 +11,9 @@ Ted Cruz
 Carly Florina
 Mark Everson
 Jim Gilmore
-
-
 Lindsey Graham
 Bobby Jindal
 George Pataki
+John Kasich
+Rand Paul
+Rick Santorum
