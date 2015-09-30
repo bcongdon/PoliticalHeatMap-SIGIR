@@ -16,7 +16,7 @@ TwitterCrawler.py makes use of TwitterAPI and AlchemyAPI. In order to use Twitte
   CONSUMER_KEY,COMSUMER_SECRET_KEY,ACCESS_TOKEN,ACCESS_TOKEN_SECRET
   ```
   * If you have more than one Twitter account, you may place additional API keys on subsequent lines to circumvent the limit on API calls per account.
-4. Create a file called "api_key.txt" in the same directory as TwitterCralwer.py. This file contains your <b>AlchemyAPI</b> keys.
+4. Create a file called "api_key.txt" in the same directory as TwitterCrawler.py. This file contains your <b>AlchemyAPI</b> keys.
 5. Register for an Alchemy API key [here](http://www.alchemyapi.com/api/register.html).
 6. In "api_key.txt" place your Alchemy API key on the first line.
   * If you have more than one AlchemyAPI key, you may place additional API keys on subsequent lines to circumvent the limit on API calls per account.
