@@ -24,7 +24,7 @@ TwitterCrawler.py makes use of TwitterAPI and AlchemyAPI. In order to use Twitte
 
   ```pip install TwitterAPI```
 
-8. Run the following command: 
+8. Run the following command within the project directory: 
 
   ```python TwitterCrawler.py```
 
