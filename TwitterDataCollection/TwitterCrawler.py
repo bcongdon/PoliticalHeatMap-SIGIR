@@ -90,7 +90,7 @@ def OutputJSONResults(resultsDict, candidate):
         outputResults['states'][state]['sentiment'] = ProcessSentimentStatistics(outputResults['states'][state]['tweets'])
 
     with open(DIR + candidate.replace(" ","") + ".json", "w+") as oFile:
-        json.dump(outputResults, oFile);
+        json.dump(outputResults, oFile, sort_keys=True, indent=4);
 
 def ProcessSentimentStatistics(tweets):
     posSentiment, negSentiment = 0,0
