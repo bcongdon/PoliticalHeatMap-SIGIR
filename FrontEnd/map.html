@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+    body{
+        margin:0px;
+        padding:0px;
+    }
 	.state{
 		fill: none;
 		stroke: #a9a9a9;
@@ -47,11 +51,73 @@
 	#tooltip tr td:nth-child(2){
 		text-align:center;
 	}
+
+/*******************************************************************
+NAVIGATION BAR
+******************************************************************/
+    #navigation-bar ul{
+        display:block;
+        list-style-type:none;
+        margin:0;
+        padding:0;
+    }
+    #navigation-bar {
+        margin:0;
+        float:right;
+        width:40%;
+        height:600px;
+        background:#f0f0f0;
+        padding:20px;
+        padding-top:0px;
+        padding-left:0px;
+        overflow:scroll;
+    }
+    #nav-cand-container{
+        position:absolute;
+        padding:10px;
+        margin:0px;
+        display:inline-block;
+        background:#CCCCEB;
+        overflow-x:hidden;
+    }
+    #nav-cand-container img{
+        width:20%;
+        margin:1%;
+        display:inline-block;
+        height:100px;
+    }
+    #nav-info-container{
+        display:inline-block;
+        margin:1%;
+        height:100px;
+        width:75%;
+        overflow-y:scroll;
+    }
+    #nav-info-container ul{
+        margin:10px;
+    }
+    #nav-candlist{
+        position:relative;
+        top:100px;
+        padding:10px;
+        width:100%;
+        background:#CCCCEB;
+    }
 </style>
 <body>
 <div id="tooltip"></div><!-- div to hold tooltip. -->
 <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+<div id = "navigation-bar">
+   <div id="nav-cand-container"> 
+        <img src = "http://www.newton.ac.uk/files/covers/968361.jpg" ></img>
+        <div id="nav-info-container">
+            <ul></ul>
+        </div>
+    </div>
+    <div id="nav-candlist"></div>
+</div>
 <script src="uStates.js"></script> <!-- creates uStates. -->
+
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
@@ -79,6 +145,36 @@
 	
 	/* draw states on id #statesvg */	
 	uStates.draw("#statesvg", sampleData, tooltipHtml);
+
+    var candidates = ["Ben Carson", "Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Person B", "Person C"];
+
+    var sampleCandidateData = ["Age: 100", "Sex: M"];
+
+
+    d3.select("body")
+    .select("#navigation-bar")
+    .select("#nav-candlist")
+    .selectAll("div")
+    .data(candidates)
+    .enter()
+    .append("div")
+    .text(function(d){
+        return d;
+    });
+
+    d3.select("body")
+    .select("#navigation-bar")
+    .select("#nav-cand-container")
+    .select("#nav-info-container")
+    .select("ul")
+    .selectAll("li")
+    .data(candidates)
+    .enter()
+    .append("li")
+    .text(function(d){
+        return d;
+    });
+
 </script>
 
 </body>
