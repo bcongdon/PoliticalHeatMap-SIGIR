@@ -119,7 +119,9 @@ NAVIGATION BAR
 <script src="uStates.js"></script> <!-- creates uStates. -->
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
+
 
 	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
 		return "<h4>"+n+"</h4><table>"+
@@ -129,7 +131,65 @@ NAVIGATION BAR
 			"</table>";
 	}
 	
-	var sampleData ={};	/* Sample random data. */	
+    var StateConversion = {
+        "HI": "Hawaii",  
+        "AK": "Alaska",
+        "FL": "Florida",
+        "SC": "SouthCarolina",
+        "GA": "Georgia",
+        "AL": "Alabama",
+        "NC": "NorthCarolina",
+        "TN": "Tennessee",
+        "RI": "RhodeIsland",
+        "CT": "Connecticut",
+        "MA": "Massachusetts",
+        "ME": "Maine",
+        "NH": "NewHampshire",
+        "VT": "Vermont",
+        "NY": "NewYork",
+        "NJ": "NewJersey",
+        "PA": "Pennsylvania",
+        "DE": "Delaware",
+        "MD": "Maryland",
+        "WV": "WestVirginia",
+        "KY": "Kentucky",
+        "OH": "Ohio",
+        "MI": "Michigan",
+        "WY": "Wyoming",
+        "MT": "Montana",
+        "ID": "Idaho",
+        "WA": "Washington",
+        "DC": "DistrictOfColumbia",
+        "TX": "Texas",
+        "CA": "California",
+        "AZ": "Arizona",
+        "NV": "Nevada",
+        "UT": "Utah",
+        "CO": "Colorado",
+        "NM": "NewMexico",
+        "OR": "Oregon",
+        "ND": "NorthDakota",
+        "SD": "SouthDakota",
+        "NE": "Nebraska",
+        "IA": "Iowa",
+        "MS": "Mississippi",
+        "IN": "Indiana",
+        "IL": "Illinois",
+        "MN": "Montana",
+	    "WI": "Wisconsin",
+        "MO": "Missouri",
+        "AR": "Arkansas",
+        "OK": "Oklahoma",
+        "KS": "Kansas",
+        "LS": "Louisiana",
+        "VA": "Virginia"
+    }
+    
+    var $JSONData;
+    
+    $.getJSON("BenCarson.json", function(json) {
+        $JSONData = json; // this will show the info it in firebug console
+        var sampleData ={};	/* Sample random data. */	
 	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
 	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
 	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
@@ -139,12 +199,29 @@ NAVIGATION BAR
 			var low=Math.round(100*Math.random()), 
 				mid=Math.round(100*Math.random()), 
 				high=Math.round(100*Math.random());
+            console.log(StateConversion[d])
+            var sentiment;
+            if($JSONData["states"][StateConversion[d]]["sentiment"] != null) {
+                sentiment = $JSONData["states"][StateConversion[d]]["sentiment"]["overall_sentiment"];
+            }
+            else{
+                sentiment = 0;   
+            }
+            low = sentiment;
+            mid = sentiment;
+            high = sentiment;
 			sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]), 
-					avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#da88ff")(high/80)}; 
+					avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#da88ff")(high * 5)}; 
 		});
+    
 	
 	/* draw states on id #statesvg */	
 	uStates.draw("#statesvg", sampleData, tooltipHtml);
+    });
+    
+    console.log($JSONData)
+      
+	
 
     var candidates = ["Ben Carson", "Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Ben Carson","Person B", "Person C"];
 
