@@ -116,17 +116,24 @@ NAVIGATION BAR
     </div>
     <div id="nav-candlist"></div>
 </div>
-<select onchange="updateCandidate()" id = "candidateSelect">
+
+<select onchange="updateCandidate(this)" id = "candidateSelect">
   <option>Ben Carson</option>
   <option>Donald Trump</option>
 </select>
-<script src="uStates.js"></script> <!-- creates uStates. -->
+
+<script src="uStates.js"></script> 
+<!-- creates uStates. -->
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
+    
+    $(document).ready(function(){
+        loadJSON("BenCarson.json");
 
-
+    });
+    
 	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
 		return "<h4>"+n+"</h4><table>"+
             "<tr><td>Overall Sentiment</td><td>"+(d.avg.toFixed(2))+"</td></tr>"+
@@ -135,9 +142,10 @@ NAVIGATION BAR
 			"</table>";
 	}
     
-    function updateCandidate(){
+    function updateCandidate(sel){
         var selector = document.getElementById("candidateSelect");
-        console.log(selector.textContent);
+        var candidateName = sel.options[sel.selectedIndex].text.replace(/\s/g, '');;
+        loadJSON(candidateName + ".json");
     }
 	
     var StateConversion = {
@@ -196,44 +204,46 @@ NAVIGATION BAR
     
     var $JSONData;
     
-    $.getJSON("DonaldTrump.json", function(json) {
-        $JSONData = json; // this will show the info it in firebug console
-        var sampleData ={};	/* Sample random data. */	
-	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
-	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
-	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
-	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-		.forEach(function(d){ 
-			var low=Math.round(100*Math.random()), 
-				mid=Math.round(100*Math.random()), 
-				high=Math.round(100*Math.random());
-            console.log(StateConversion[d])
-            var sentiment;
-            if($JSONData["states"][StateConversion[d]]["sentiment"] != null) {
-                sentiment = $JSONData["states"][StateConversion[d]]["sentiment"]["overall_sentiment"];
-                percentNeg = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_negitive_sentiment"];
-                percentPos = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_positive_sentiment"];
-            }
-            else{
-                sentiment = 0; 
-                percentNeg = 0;
-                percentPos = 0;
-            }
-            color = d3.scale.linear().domain([-2,2]).interpolate(d3.interpolateRgb)
-                        .range(["#ff0000", "#00ff00"])(sentiment)
-            if(sentiment == 0){
-                color = "#dddddd";   
-            }
-			sampleData[d]={low:percentNeg, high:percentPos, avg:sentiment, color:color}; 
-		});
-    
-	
-	/* draw states on id #statesvg */	
-	uStates.draw("#statesvg", sampleData, tooltipHtml);
-    });
-    
-    console.log($JSONData)
+    var loadJSON = function(candidate){
+        $.getJSON("JSONs/" + candidate, function(json) {
+            $JSONData = json; // this will show the info it in firebug console
+            var sampleData ={};	/* Sample random data. */	
+        ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+        "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
+        "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
+        "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
+        "WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+            .forEach(function(d){ 
+                var low=Math.round(100*Math.random()), 
+                    mid=Math.round(100*Math.random()), 
+                    high=Math.round(100*Math.random());
+                console.log(StateConversion[d])
+                var sentiment;
+                if($JSONData["states"][StateConversion[d]]["sentiment"] != null) {
+                    sentiment = $JSONData["states"][StateConversion[d]]["sentiment"]["overall_sentiment"];
+                    percentNeg = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_negitive_sentiment"];
+                    percentPos = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_positive_sentiment"];
+                }
+                else{
+                    sentiment = 0; 
+                    percentNeg = 0;
+                    percentPos = 0;
+                }
+                color = d3.scale.linear().domain([-2,2]).interpolate(d3.interpolateRgb)
+                            .range(["#ff0000", "#00ff00"])(sentiment)
+                if(sentiment == 0){
+                    color = "#dddddd";   
+                }
+                sampleData[d]={low:percentNeg, high:percentPos, avg:sentiment, color:color}; 
+            });
+
+
+        /* draw states on id #statesvg */	
+        uStates.draw("#statesvg", sampleData, tooltipHtml);
+        });
+
+        console.log($JSONData)
+    }
       
 	
 
