@@ -107,19 +107,24 @@ NAVIGATION BAR
 <body>
 <div id="tooltip"></div><!-- div to hold tooltip. -->
 <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-<div id = "navigation-bar">
-   <div id="nav-cand-container"> 
-        <img src = "http://www.newton.ac.uk/files/covers/968361.jpg" ></img>
-        <div id="nav-info-container">
-            <ul></ul>
-        </div>
-    </div>
-    <div id="nav-candlist"></div>
-</div>
+
 
 <select onchange="updateCandidate(this)" id = "candidateSelect">
   <option>Ben Carson</option>
   <option>Donald Trump</option>
+  <option>Bobby Jindal</option>
+  <option>Carly Fiorina</option>
+  <option>Chris Christie</option>
+  <option>Hillary Clinton</option>
+  <option>Jeb Bush</option>
+  <option>Lindsey Graham</option>
+  <option>Mike Huckabee</option>
+  <option>Ted Cruz</option>
+  <option>Bernie Sanders</option>
+  <option>Jim Webb</option>
+  <option>Jim Gilmore</option>
+  <option>Martin O'Malley</option>
+  <option>Mark Everson</option>
 </select>
 
 <script src="uStates.js"></script> 
@@ -131,14 +136,13 @@ NAVIGATION BAR
     
     $(document).ready(function(){
         loadJSON("BenCarson.json");
-
     });
     
 	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
 		return "<h4>"+n+"</h4><table>"+
             "<tr><td>Overall Sentiment</td><td>"+(d.avg.toFixed(2))+"</td></tr>"+
-			"<tr><td>Positive Sentiment</td><td>"+(d.low.toFixed(0))+"\%</td></tr>"+
-			"<tr><td>Negitive Sentiment</td><td>"+(d.high.toFixed(0))+"\%</td></tr>"+
+			"<tr><td>Positive Sentiment</td><td>"+(d.high.toFixed(0))+"\%</td></tr>"+
+			"<tr><td>Negitive Sentiment</td><td>"+(d.low.toFixed(0))+"\%</td></tr>"+
 			"</table>";
 	}
     
@@ -219,7 +223,8 @@ NAVIGATION BAR
                     high=Math.round(100*Math.random());
                 console.log(StateConversion[d])
                 var sentiment;
-                if($JSONData["states"][StateConversion[d]]["sentiment"] != null) {
+                
+                if($JSONData["states"][StateConversion[d]] != null && $JSONData["states"][StateConversion[d]]["sentiment"] != null) {
                     sentiment = $JSONData["states"][StateConversion[d]]["sentiment"]["overall_sentiment"];
                     percentNeg = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_negitive_sentiment"];
                     percentPos = $JSONData["states"][StateConversion[d]]["sentiment"]["percent_positive_sentiment"];
@@ -252,29 +257,29 @@ NAVIGATION BAR
     var sampleCandidateData = ["Age: 100", "Sex: M"];
 
 
-    d3.select("body")
-    .select("#navigation-bar")
-    .select("#nav-candlist")
-    .selectAll("div")
-    .data(candidates)
-    .enter()
-    .append("div")
-    .text(function(d){
-        return d;
-    });
-
-    d3.select("body")
-    .select("#navigation-bar")
-    .select("#nav-cand-container")
-    .select("#nav-info-container")
-    .select("ul")
-    .selectAll("li")
-    .data(candidates)
-    .enter()
-    .append("li")
-    .text(function(d){
-        return d;
-    });
+//    d3.select("body")
+//    .select("#navigation-bar")
+//    .select("#nav-candlist")
+//    .selectAll("div")
+//    .data(candidates)
+//    .enter()
+//    .append("div")
+//    .text(function(d){
+//        return d;
+//    });
+//
+//    d3.select("body")
+//    .select("#navigation-bar")
+//    .select("#nav-cand-container")
+//    .select("#nav-info-container")
+//    .select("ul")
+//    .selectAll("li")
+//    .data(candidates)
+//    .enter()
+//    .append("li")
+//    .text(function(d){
+//        return d;
+//    });
 
 </script>
 
